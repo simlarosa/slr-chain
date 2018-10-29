@@ -7,6 +7,21 @@ class Transaction { //create a Transaction object
     this.outputs = []; //create an output that is a empy array
   }
 
+  update(senderWallet, recipient, amount) {
+    const senderOutput = this.outputs.find(output => output.address === senderWallet.publicKey);
+
+    if (amount > senderOutput.amount) {
+      console.log(`Amount: ${amount} exceeds balance.`);
+      return;
+    }
+
+    senderOutput.amount = senderOutput.amount - amount;
+    this.outputs.push({ amount, address: recipient});
+    Transaction.signTransaction(this, senderWallet);
+
+    return this;
+  }
+
   static newTransaction(senderWallet, recipient, amount) { //static method newTransaction that needs the address of the sender wallet, the address of the recipient, and the amount that needs to be transfer
     const transaction = new this(); //create an instance of transaction
 
@@ -31,6 +46,14 @@ class Transaction { //create a Transaction object
       address: senderWallet.publicKey, //the publicKey
       signature: senderWallet.sign(ChainUtil.hash(transaction.outputs)) //sign the stransaction with the hash of the outputs of the transaction
     }
+  }
+
+  static veryTransaction(transaction) {
+    return ChainUtil.verifySignature(
+      transaction.input.address,
+      transaction.input.signature,
+      ChainUtil.hash(transaction.outputs)
+    );
   }
 }
 
