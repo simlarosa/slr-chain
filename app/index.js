@@ -11,7 +11,7 @@ const app = express(); //dichiariamo l'oggetto app che è express
 const bc = new Blockchain(); //dichiariamo un'istanza della Blockchain
 const wallet = new Wallet(); //declare an instance of the wallet
 const tp = new TransactionPool(); //declare an instance of the TransactionPool
-const p2pServer = new P2pServer(bc);
+const p2pServer = new P2pServer(bc, tp);
 
 app.use(bodyParser.json()); //utilizziamo il bodyParser per ricevere risposte in POST in formato JSON
 
@@ -35,7 +35,12 @@ app.get('/transactions', (req, res)=> { //create a get API for see all the trans
 app.post('/transact', (req, res) => { //create a post API to make a transaction
   const { recipient, amount } = req.body; //declare the request body and take the data
   const transaction = wallet.createTransaction(recipient, amount, tp); //create the transaction from the wallet
+  p2pServer.broadcastTransaction(transaction);
   res.redirect('/transactions'); //redirect to see the transaction
+});
+
+app.get('/public-Key', (req, res)=> {
+  res.json({ publicKey: wallet.publicKey});
 });
 
 app.listen(HTTP_PORT, () => console.log(`Listening on port ${HTTP_PORT}`)); //Asscoltiamo nell pota 3001
