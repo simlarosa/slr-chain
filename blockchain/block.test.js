@@ -1,4 +1,4 @@
-const Block = require('./block');
+  const Block = require('./block');
 const {DIFFICULTY} = require('../config');
 //We will use jest to run the test and this is the way to write a test:
 
@@ -32,3 +32,4 @@ let data, lastBlock, block; //we declare the variable to be use in each function
    expect(Block.adjustDifficulty(block,block.timestamp+1)).toEqual(block.difficulty+1);
   });
 });
+  

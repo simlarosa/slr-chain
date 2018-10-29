@@ -1,4 +1,5 @@
 const ChainUtil = require('../chain-util'); //require the chain util
+const { MINING_REWARD } = require('../config');
 
 class Transaction { //create a Transaction object
   constructor() {
@@ -22,21 +23,29 @@ class Transaction { //create a Transaction object
     return this;
   }
 
-  static newTransaction(senderWallet, recipient, amount) { //static method newTransaction that needs the address of the sender wallet, the address of the recipient, and the amount that needs to be transfer
-    const transaction = new this(); //create an instance of transaction
+  static transactionWithOutputs(senderWallet, outputs) {
+      const transaction = new this(); //create an instance of transaction
+      transaction.outputs.push(...outputs);
+      Transaction.signTransaction(transaction, senderWallet); //sign the Transaction by called the method
+      return transaction;
+  }
 
+  static newTransaction(senderWallet, recipient, amount) { //static method newTransaction that needs the address of the sender wallet, the address of the recipient, and the amount that needs to be transfer
     if(amount > senderWallet.balance) { //check if the amount is higher than the balance
       console.log(`Amount: ${amount} exceeds balance.`);
       return;
     }
 
-    transaction.outputs.push(...[ //create the outputs as an array of objects
+    return Transaction.transactionWithOutputs(senderWallet, [ //create the outputs as an array of objects
       { amount: senderWallet.balance - amount, address: senderWallet.publicKey },
       { amount, address: recipient }
-    ])
-    Transaction.signTransaction(transaction, senderWallet); //sign the Transaction by called the method
+    ]);
+  }
 
-    return transaction; //return the transaction
+  static rewardTransaction(minerWallet, blockchainWallet){
+    return Transaction.transactionWithOutputs(blockchainWallet, [{
+      amount: MINING_REWARD, address: minerWallet.publicKey
+    }]);
   }
 
   static signTransaction(transaction, senderWallet) { //static method for sign a transaction by know the transaction and the senderWallet
@@ -48,7 +57,7 @@ class Transaction { //create a Transaction object
     }
   }
 
-  static veryTransaction(transaction) {
+  static verifyTransaction(transaction) {
     return ChainUtil.verifySignature(
       transaction.input.address,
       transaction.input.signature,

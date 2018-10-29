@@ -1,4 +1,4 @@
-/* ---------TESTING THE BLOCK MINING----------
+/* ---------TESTING THE BLOCK MINING----------*/
 
 const Blockchain = require('./blockchain');
 
@@ -8,7 +8,7 @@ for (let i=0; i<101; i++) {
   console.log(bc.addBlock(`PIXA n.${i}`).toString());
 }
 
-*/
+
 
 const Wallet = require('./wallet');
 const wallet = new  Wallet();
