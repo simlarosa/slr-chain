@@ -14,6 +14,10 @@ class Wallet { //create a Wallet object
     publicKey: ${this.publicKey.toString()}
     balance  : ${this.balance}`
   }
+
+  sign(dataHash) { //the sign method that take an hash as attributes
+    return this.keyPair.sign(dataHash); //ritorna il sign method of the library ec
+  }
 }
 
 module.exports = Wallet;

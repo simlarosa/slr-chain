@@ -7,7 +7,7 @@ A block contains:
 
 We code a Block as a class */
 
-const SHA256 = require('crypto-js/sha256'); //we require sha256 function from library crypto-js
+const ChainUtil = require('../chain-util');
 const {DIFFICULTY, MINE_RATE} = require('../config');
 
 class Block {  //create a class model called Block
@@ -51,7 +51,7 @@ class Block {  //create a class model called Block
   }
 
   static hash(timestamp, lastHash, data, nonce, difficulty) { //we create an hash function that combine timestamp and lastHash and data for create the Hash
-    return SHA256(`${timestamp}${lastHash}${data}${nonce}${difficulty}`).toString(); //calling SHA256 function of the crypto-js library
+    return ChainUtil.hash(`${timestamp}${lastHash}${data}${nonce}${difficulty}`).toString(); //calling SHA256 function of the crypto-js library
   }
 
   static blockHash(block){ //receive a block and calculate is own hash base on the data inside it
