@@ -42,7 +42,7 @@ class Transaction { //create a Transaction object
     ]);
   }
 
-  static rewardTransaction(minerWallet, blockchainWallet){
+  static rewardTransaction(minerWallet, blockchainWallet) {
     return Transaction.transactionWithOutputs(blockchainWallet, [{
       amount: MINING_REWARD, address: minerWallet.publicKey
     }]);
@@ -58,11 +58,11 @@ class Transaction { //create a Transaction object
   }
 
   static verifyTransaction(transaction) {
-    return ChainUtil.verifySignature(
-      transaction.input.address,
-      transaction.input.signature,
-      ChainUtil.hash(transaction.outputs)
-    );
+     return ChainUtil.verifySignature(
+       transaction.input.address,
+       transaction.input.signature,
+       ChainUtil.hash(transaction.outputs)
+     );
   }
 }
 

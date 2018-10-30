@@ -4,7 +4,7 @@ const P2P_PORT = process.env.P2P_PORT || 5001; //we define a port
 const peers = process.env.PEERS ? process.env.PEERS.split(',') : []; //we define also PEERS constant
 const MESSAGE_TYPES = {
   chain: 'CHAIN',
-  transaction: 'TRANSACTION'
+  transaction: 'TRANSACTION',
   clear_transactions: 'CLEAR_TRANSACTIONS'
 };
 
@@ -58,21 +58,22 @@ class P2pServer { //create a P2pServer class
   }
 
   sendChain(socket) {
-      socket.send(JSON.stringify({
-        type: MESSAGE_TYPES.chain,
-        chain: this.blockchain.chain
-      }));
-    }
+    socket.send(JSON.stringify({
+      type: MESSAGE_TYPES.chain,
+      chain: this.blockchain.chain
+    }));
+  }
 
-    sendTransaction(socket, transaction) {
-      socket.send(JSON.stringify({
-        type: MESSAGE_TYPES.transaction,
-        transaction
-      }));
-    }
+  sendTransaction(socket, transaction) {
+    socket.send(JSON.stringify({
+      type: MESSAGE_TYPES.transaction,
+      transaction
+    }));
+  }
 
 
-    syncChains() {
+
+  syncChains() {
     this.sockets.forEach(socket => this.sendChain(socket));
   }
 
@@ -80,7 +81,7 @@ class P2pServer { //create a P2pServer class
     this.sockets.forEach(socket => this.sendTransaction(socket, transaction));
   }
 
-  broadcastClearTransactions(){
+  broadcastClearTransactions() {
     this.sockets.forEach(socket => socket.send(JSON.stringify({
       type: MESSAGE_TYPES.clear_transactions
     })));
