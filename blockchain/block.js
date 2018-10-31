@@ -31,7 +31,7 @@ class Block {  //create a class model called Block
   }
 
   static genesis() { //By putting static identifier we can called the method without making a new instance of the Block
-    return new this('Genesis time','-------', 'f1r57-h4sh', 'This block is property of Simone La Rosa', 0, DIFFICULTY); //This return a new instance of the class
+    return new this('Genesis time','-------', 'f1r57-h4sh', [], 0, DIFFICULTY); //This return a new instance of the class
   }
 
   static mineBlock(lastBlock, data) { //We create a static method that have the purpose of create new block and needs as attribute lastBlock and data

@@ -25,10 +25,6 @@ class TransactionPool{
         return total + parseInt(output.amount,10);
       }, 0);
 
-      console.log(`${outputTotal}`);
-      console.log(`${transaction.input.amount}`);
-
-
       if (transaction.input.amount !== outputTotal) {
         console.log(`Invalid transaction from ${transaction.input.address}.`);
         return;

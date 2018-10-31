@@ -36,7 +36,7 @@ app.get('/transactions', (req, res)=> { //create a get API for see all the trans
 
 app.post('/transact', (req, res) => { //create a post API to make a transaction
   const { recipient, amount } = req.body; //declare the request body and take the data
-  const transaction = wallet.createTransaction(recipient, amount, tp); //create the transaction from the wallet
+  const transaction = wallet.createTransaction(recipient, amount, bc ,tp); //create the transaction from the wallet
   p2pServer.broadcastTransaction(transaction);
   res.redirect('/transactions'); //redirect to see the transaction
 });
